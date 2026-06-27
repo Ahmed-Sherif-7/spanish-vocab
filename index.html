@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Spanish Vocabulary</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-deep:    #07090f;
+    --bg-mid:     #0d1120;
+    --glass-bg:   rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --glass-hover: rgba(255,255,255,0.08);
+    --accent-blue: #4f8ef7;
+    --accent-gold: #f0b429;
+    --accent-red:  #e5484d;
+    --accent-green:#3dd68c;
+    --text-primary: #eef0f6;
+    --text-secondary: #7e8ba8;
+    --text-muted:  #3d4860;
+    --marked-bg:   rgba(229,72,77,0.15);
+    --marked-border: rgba(229,72,77,0.4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans Arabic', 'Geeza Pro', Tahoma, Arial, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background orbs */
+  body::before {
+    content:'';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,142,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content:'';
+    position: fixed;
+    bottom: -200px; right: -200px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(240,180,41,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(7,9,15,0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 28px;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+  .brand-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, #4f8ef7, #a259f7);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 18px rgba(79,142,247,0.35);
+  }
+  .brand-text h1 { font-size: 17px; font-weight: 800; color: var(--text-primary); line-height: 1.2; }
+  .brand-text span { font-size: 12px; color: var(--accent-blue); font-weight: 500; }
+
+  .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  /* ─── GLASS BUTTON ─── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn svg { flex-shrink: 0; }
+  .btn-glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    backdrop-filter: blur(12px);
+  }
+  .btn-glass:hover { background: var(--glass-hover); color: var(--text-primary); border-color: rgba(255,255,255,0.16); }
+  .btn-primary {
+    background: linear-gradient(135deg, #4f8ef7, #3a6fd8);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(79,142,247,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 22px rgba(79,142,247,0.45); transform: translateY(-1px); }
+  .btn-gold {
+    background: linear-gradient(135deg, #f0b429, #d4910a);
+    color: #0d0a00;
+    box-shadow: 0 4px 16px rgba(240,180,41,0.25);
+  }
+  .btn-gold:hover { box-shadow: 0 6px 22px rgba(240,180,41,0.4); transform: translateY(-1px); }
+  .btn-green {
+    background: linear-gradient(135deg, #3dd68c, #28a869);
+    color: #001a0d;
+    box-shadow: 0 4px 16px rgba(61,214,140,0.25);
+  }
+  .btn-green:hover { box-shadow: 0 6px 22px rgba(61,214,140,0.4); transform: translateY(-1px); }
+  .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 7px; }
+  .btn-icon { padding: 7px; border-radius: 8px; }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 28px 24px; position: relative; z-index: 1; }
+
+  /* ─── STAT CHIPS ─── */
+  .stats-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  .stat-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    border-radius: 10px;
+    padding: 10px 16px;
+    flex: 1; min-width: 130px;
+  }
+  .stat-chip-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .stat-chip-icon.blue  { background: rgba(79,142,247,0.15); }
+  .stat-chip-icon.gold  { background: rgba(240,180,41,0.15); }
+  .stat-chip-icon.red   { background: rgba(229,72,77,0.15); }
+  .stat-chip-icon.green { background: rgba(61,214,140,0.15); }
+  .stat-num { font-size: 20px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* ─── SEARCH ─── */
+  .search-wrap {
+    position: relative; margin-bottom: 16px;
+  }
+  .search-icon {
+    position: absolute; top: 50%; left: 14px; transform: translateY(-50%);
+    color: var(--text-muted); pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    padding: 12px 16px 12px 44px;
+    font-family: inherit; font-size: 14px;
+    color: var(--text-primary);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    direction: ltr;
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-input:focus { outline: none; border-color: rgba(79,142,247,0.5); box-shadow: 0 0 0 3px rgba(79,142,247,0.1); }
+
+  /* ─── CATEGORY PILLS ─── */
+  .cats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .cat-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-secondary);
+    transition: all 0.18s;
+    font-family: inherit;
+  }
+  .cat-pill:hover { background: var(--glass-hover); color: var(--text-primary); }
+  .cat-pill.active {
+    background: rgba(79,142,247,0.18);
+    border-color: rgba(79,142,247,0.45);
+    color: var(--accent-blue);
+  }
+
+  /* ─── ADD WORD PANEL ─── */
+  .add-panel {
+    background: var(--glass-bg);
+    border: 1px solid rgba(61,214,140,0.25);
+    backdrop-filter: blur(16px);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .add-panel.open { display: block; }
+  .add-panel-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; color: var(--accent-green); display: flex; align-items: center; gap: 6px; }
+  .add-panel-fields { display: flex; gap: 10px; flex-wrap: wrap; }
+  .add-input {
+    flex: 1; min-width: 160px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-family: inherit; font-size: 14px;
+    color: var(--text-primary);
+  }
+  .add-input:focus { outline: none; border-color: rgba(61,214,140,0.5); }
+  .add-input::placeholder { color: var(--text-muted); }
+
+  /* ─── TABLE ─── */
+  .results-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px; gap: 8px;
+  }
+  .results-count { font-size: 12px; color: var(--text-muted); }
+  .marked-toggle {
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 5px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    background: none; border: none; font-family: inherit;
+    padding: 4px 8px; border-radius: 6px; transition: color 0.2s;
+  }
+  .marked-toggle:hover { color: var(--accent-red); }
+  .marked-toggle.active { color: var(--accent-red); }
+
+  .table-wrap {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .table-head {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .th {
+    font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .th.es { color: rgba(79,142,247,0.7); }
+  .th.ar { color: rgba(240,180,41,0.7); text-align: right; direction: rtl; unicode-bidi: isolate; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr;
+    padding: 10px 16px;
+    align-items: center;
+    cursor: default;
+    transition: background 0.15s, transform 0.1s;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .row:last-child { }
+  .row:nth-child(even) { background: rgba(255,255,255,0.015); }
+  .row:hover { background: var(--glass-hover); }
+  .row.pressing { background: rgba(79,142,247,0.12); transform: scale(0.99); }
+  .row.marked {
+    background: var(--marked-bg);
+  }
+  .row.marked:hover { background: rgba(229,72,77,0.2); }
+
+  .row-num { font-size: 11px; color: var(--text-muted); user-select: none; }
+
+  .cell-es {
+    font-size: 14px; font-weight: 500; color: #b8cfff;
+    padding-right: 12px; direction: ltr; text-align: left;
+  }
+  .row.marked .cell-es { color: #fff; font-weight: 600; }
+
+  .cell-ar {
+    font-size: 14px; color: #f5d98a;
+    text-align: right; direction: rtl; unicode-bidi: isolate;
+    padding-left: 12px;
+  }
+  .row.marked .cell-ar { color: #fff; font-weight: 600; }
+
+  /* ─── CONTEXT MENU ─── */
+  .ctx-menu {
+    position: fixed;
+    z-index: 250;
+    min-width: 180px;
+    background: rgba(20,25,40,0.97);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 14px;
+    padding: 6px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+    opacity: 0;
+    transform: scale(0.92) translateY(6px);
+    transition: opacity 0.15s, transform 0.15s;
+    pointer-events: none;
+  }
+  .ctx-menu.open {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+  .ctx-backdrop {
+    position: fixed; inset: 0; z-index: 249;
+    display: none;
+  }
+  .ctx-backdrop.open { display: block; }
+  .ctx-item {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 9px;
+    background: none;
+    color: var(--text-primary);
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    direction: ltr;
+  }
+  .ctx-item:hover { background: rgba(255,255,255,0.07); }
+  .ctx-item.danger { color: var(--accent-red); }
+  .ctx-item.danger:hover { background: rgba(229,72,77,0.12); }
+  .ctx-item svg { flex-shrink: 0; }
+  .ctx-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 6px; }
+
+  /* Inline edit inputs */
+  .edit-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr auto;
+    gap: 6px;
+    padding: 10px 16px;
+    align-items: center;
+  }
+
+  /* Inline edit inputs */
+  .edit-input {
+    width: 100%;
+    background: rgba(79,142,247,0.08);
+    border: 1px solid rgba(79,142,247,0.35);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-family: inherit; font-size: 13px;
+    color: var(--text-primary);
+    margin-right: 4px;
+  }
+  .edit-input:focus { outline: none; border-color: var(--accent-blue); }
+  .edit-input.ar { direction: rtl; text-align: right; unicode-bidi: isolate; }
+  .save-btn { background: var(--accent-green); color: #001a0d; border-radius: 8px; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cancel-btn { background: rgba(255,255,255,0.08); color: var(--text-secondary); border-radius: 8px; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .edit-actions { display: flex; gap: 6px; }
+
+  /* ─── QUIZ OVERLAY ─── */
+  .quiz-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(7,9,15,0.92);
+    backdrop-filter: blur(20px);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .quiz-overlay.open { display: flex; }
+  .quiz-box {
+    width: 100%; max-width: 480px;
+  }
+  .quiz-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 32px;
+  }
+  .quiz-progress-text { font-size: 13px; color: var(--text-secondary); }
+  .quiz-progress-bar {
+    width: 100%; height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px; margin-top: 8px; overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f8ef7, #a259f7);
+    border-radius: 2px;
+    transition: width 0.4s;
+  }
+  .quiz-card {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 22px;
+    padding: 52px 36px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s, transform 0.2s;
+    min-height: 230px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    user-select: none;
+  }
+  .quiz-card:hover { transform: translateY(-2px); }
+  .quiz-card.flipped {
+    border-color: rgba(61,214,140,0.4);
+    background: rgba(61,214,140,0.06);
+  }
+  .quiz-lang-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; margin-bottom: 18px;
+  }
+  .quiz-word {
+    font-size: 30px; font-weight: 800; line-height: 1.3;
+    color: #fff;
+  }
+  .quiz-hint { margin-top: 16px; font-size: 12px; color: var(--text-muted); }
+  .quiz-next {
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #3dd68c, #28a869);
+    border: none; border-radius: 14px;
+    font-family: inherit; font-size: 16px; font-weight: 700;
+    color: #001a0d; cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    display: none;
+  }
+  .quiz-next.show { display: block; }
+  .quiz-next:hover { transform: translateY(-2px); opacity: 0.92; }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    z-index: 300;
+    background: rgba(20,25,40,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 12px 22px;
+    font-size: 14px; font-weight: 600;
+    color: var(--text-primary);
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s;
+    opacity: 0;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ─── EMPTY ─── */
+  .empty {
+    padding: 60px 20px; text-align: center;
+    color: var(--text-muted); font-size: 14px;
+  }
+  .empty svg { margin-bottom: 14px; display: block; margin-inline: auto; opacity: 0.4; }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header-inner { height: auto; padding: 12px 0; }
+    .table-head, .row { grid-template-columns: 30px 1fr 1fr 72px; }
+    .cell-es, .cell-ar { font-size: 13px; }
+    .quiz-word { font-size: 24px; }
+    .stat-chip { min-width: 100px; }
+  }
+
+  /* ─── NO BORDERS ANYWHERE ─── */
+  *:not(.ctx-menu) {
+    border: none !important;
+    border-width: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>My Spanish Vocabulary</h1>
+        <span id="subtitle-count">Loading...</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-gold" onclick="startQuiz()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.04z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.04z"/></svg>
+        Quiz yourself
+      </button>
+      <button class="btn btn-green" onclick="toggleAddPanel()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add
+      </button>
+      <button class="btn btn-glass" onclick="downloadCSV()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        CSV
+      </button>
+      <button class="btn btn-glass" onclick="document.getElementById('import-input').click()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Import
+      </button>
+      <input type="file" id="import-input" accept=".csv" style="display:none" onchange="importCSV(event)"/>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-chip">
+      <div class="stat-chip-icon blue">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f8ef7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div>
+        <div class="stat-num" id="stat-total" style="color:#4f8ef7">0</div>
+        <div class="stat-label">Total words</div>
+      </div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-icon red">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e5484d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div>
+        <div class="stat-num" id="stat-marked" style="color:#e5484d">0</div>
+        <div class="stat-label">Need review</div>
+      </div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-icon green">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3dd68c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>
+        <div class="stat-num" id="stat-known" style="color:#3dd68c">0</div>
+        <div class="stat-label">Known</div>
+      </div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-chip-icon gold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f0b429" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div>
+        <div class="stat-num" id="stat-shown" style="color:#f0b429">0</div>
+        <div class="stat-label">Currently shown</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <div class="search-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+    <input class="search-input" id="search-input" type="text" placeholder="Search in Spanish or Arabic..." oninput="render()"/>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="cats" id="cats-container"></div>
+
+  <!-- ADD PANEL -->
+  <div class="add-panel" id="add-panel">
+    <div class="add-panel-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add a new word
+    </div>
+    <div class="add-panel-fields">
+      <input class="add-input" id="new-es" type="text" placeholder="Word in Spanish" style="direction:ltr;text-align:left"/>
+      <input class="add-input" id="new-ar" type="text" placeholder="Translation in Arabic" style="direction:rtl;text-align:right"/>
+      <button class="btn btn-green btn-sm" onclick="addWord()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Save
+      </button>
+      <button class="btn btn-glass btn-sm" onclick="toggleAddPanel()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- RESULTS BAR -->
+  <div class="results-bar">
+    <div class="results-count" id="results-count">0 words</div>
+    <button class="marked-toggle" id="show-marked-btn" onclick="toggleShowMarked()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Show only those needing review
+    </button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-head">
+      <div class="th">#</div>
+      <div class="th es">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;margin-right:4px"><path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/></svg>
+        Spanish
+      </div>
+      <div class="th ar">Arabic</div>
+    </div>
+    <div id="table-body"></div>
+  </div>
+</main>
+
+<!-- QUIZ OVERLAY -->
+<div class="quiz-overlay" id="quiz-overlay">
+  <div class="quiz-box">
+    <div class="quiz-top">
+      <div>
+        <div class="quiz-progress-text" id="quiz-prog-text">1 / 10</div>
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-prog-fill" style="width:0%"></div></div>
+      </div>
+      <button class="btn btn-glass btn-sm" onclick="closeQuiz()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Exit
+      </button>
+    </div>
+    <div class="quiz-card" id="quiz-card" onclick="flipCard()">
+      <div class="quiz-lang-label" id="quiz-lang" style="color:#4f8ef7">🇪🇸 Spanish</div>
+      <div class="quiz-word" id="quiz-word">—</div>
+      <div class="quiz-hint" id="quiz-hint">Tap to see the answer</div>
+    </div>
+    <button class="quiz-next" id="quiz-next" onclick="nextCard()">Next →</button>
+  </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div class="ctx-backdrop" id="ctx-backdrop" onclick="closeCtxMenu()"></div>
+<div class="ctx-menu" id="ctx-menu"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────
+const RAW_CSV = `Spanish,Arabic
+hola,أهلاً / مرحباً
+adiós,مع السلامة
+buenos días,صباح الخير
+buenas tardes,مساء الخير
+buenas noches,مساء النور / تصبح على خير
+por favor,من فضلك
+gracias,شكراً
+muchas gracias,شكراً جزيلاً
+de nada,عفواً / على الرحب
+perdón,آسف / عذراً
+lo siento,أنا آسف
+sí,نعم
+no,لا
+¿cómo estás?,كيف حالك؟
+bien,بخير / كويس
+muy bien,كويس جداً
+mal,سيء / وحش
+más o menos,تقريباً / نص ونص
+encantado,تشرفت
+mucho gusto,تشرفت / سعيد بلقائك
+¿cómo te llamas?,ما اسمك؟
+me llamo,اسمي
+¿de dónde eres?,من أين أنت؟
+soy de,أنا من
+¿cuántos años tienes?,كم عمرك؟
+tengo,عندي / أنا أملك
+¿qué?,ماذا؟
+¿quién?,من؟
+¿dónde?,أين؟
+¿cuándo?,متى؟
+¿cómo?,كيف؟
+¿cuánto?,كم؟
+¿por qué?,لماذا؟
+porque,لأن
+y,و
+o,أو
+pero,لكن
+también,أيضاً
+ahora,الآن
+aquí,هنا
+allí,هناك
+yo,أنا
+tú,أنت
+él,هو
+ella,هي
+nosotros,نحن
+vosotros,أنتم
+ellos,هم
+ellas,هن
+usted,حضرتك (مفرد رسمي)
+ustedes,حضراتكم (جمع رسمي)
+ser,يكون (دائم)
+estar,يكون (مؤقت)
+tener,يملك / عنده
+hacer,يفعل / يعمل
+ir,يذهب
+venir,يأتي
+querer,يريد
+poder,يستطيع
+saber,يعرف
+hablar,يتكلم
+comer,يأكل
+beber,يشرب
+vivir,يعيش
+escribir,يكتب
+leer,يقرأ
+escuchar,يسمع
+ver,يرى
+mirar,ينظر / يشاهد
+trabajar,يشتغل
+estudiar,يدرس
+comprar,يشتري
+vender,يبيع
+llegar,يوصل / يصل
+salir,يخرج
+entrar,يدخل
+abrir,يفتح
+cerrar,يغلق
+dormir,ينام
+levantarse,يصحى / يقوم
+sentarse,يجلس
+llamarse,اسمه
+gustar,يعجب
+necesitar,يحتاج
+buscar,يبحث
+encontrar,يجد / يلاقي
+dar,يعطي
+poner,يضع / يحط
+traer,يجيب / يحضر
+llevar,يحمل / يأخذ
+esperar,ينتظر
+pensar,يفكر
+creer,يعتقد
+conocer,يعرف (شخص)
+preguntar,يسأل
+contestar,يرد / يجاوب
+empezar,يبدأ
+terminar,ينهي / يخلص
+ayudar,يساعد
+jugar,يلعب
+caminar,يمشي
+correr,يجري
+cocinar,يطبخ
+limpiar,ينظف
+uno,واحد
+dos,اتنين
+tres,تلاتة
+cuatro,أربعة
+cinco,خمسة
+seis,ستة
+siete,سبعة
+ocho,تمانية
+nueve,تسعة
+diez,عشرة
+once,حداشر
+doce,اتناشر
+trece,تلتاشر
+catorce,أربعتاشر
+quince,خمستاشر
+dieciséis,ستاشر
+diecisiete,سبعتاشر
+dieciocho,تمنتاشر
+diecinueve,تسعتاشر
+veinte,عشرين
+veintiuno,واحد وعشرين
+treinta,تلاتين
+cuarenta,أربعين
+cincuenta,خمسين
+sesenta,ستين
+setenta,سبعين
+ochenta,تمانين
+noventa,تسعين
+cien,مية
+doscientos,ميتين
+mil,ألف
+primero,الأول
+segundo,الثاني
+tercero,الثالث
+cuarto,الرابع
+quinto,الخامس
+lunes,الاثنين
+martes,الثلاثاء
+miércoles,الأربعاء
+jueves,الخميس
+viernes,الجمعة
+sábado,السبت
+domingo,الأحد
+enero,يناير
+febrero,فبراير
+marzo,مارس
+abril,أبريل
+mayo,مايو
+junio,يونيو
+julio,يوليو
+agosto,أغسطس
+septiembre,سبتمبر
+octubre,أكتوبر
+noviembre,نوفمبر
+diciembre,ديسمبر
+hoy,اليوم
+mañana,بكرة / غداً
+ayer,إمبارح / أمس
+esta semana,الأسبوع ده
+el fin de semana,آخر الأسبوع
+el año pasado,السنة اللي فاتت
+el año que viene,السنة الجاية
+la mañana,الصبح
+la tarde,بعد الضهر
+la noche,الليل
+el mediodía,الضهر
+la medianoche,نص الليل
+un segundo,ثانية
+un minuto,دقيقة
+una hora,ساعة
+un día,يوم
+una semana,أسبوع
+un mes,شهر
+un año,سنة
+la familia,العيلة
+el padre,الأب
+la madre,الأم
+el hermano,الأخ
+la hermana,الأخت
+el hijo,الابن
+la hija,البنت
+el abuelo,الجد
+la abuela,الجدة
+el tío,العم / الخال
+la tía,العمة / الخالة
+el primo,ابن العم / ابن الخال
+la prima,بنت العم / بنت الخال
+el marido,الزوج
+la mujer,الزوجة / المرأة
+el novio,الحبيب / الخطيب
+la novia,الحبيبة / الخطيبة
+el amigo,الصاحب (ذكر)
+la amiga,الصاحبة (أنثى)
+el vecino,الجار (ذكر)
+la vecina,الجارة (أنثى)
+el bebé,الرضيع / البيبي
+el niño,الطفل (ذكر)
+la niña,الطفلة (أنثى)
+el joven,الشاب
+la joven,الشابة
+el hombre,الرجل
+el señor,السيد
+la señora,السيدة
+la señorita,الآنسة
+la cabeza,الرأس
+el pelo,الشعر
+la cara,الوجه
+el ojo,العين
+los ojos,العيون
+la nariz,الأنف
+la boca,الفم
+la oreja,الأذن
+el diente,السن
+la mano,اليد
+el dedo,الإصبع
+el brazo,الذراع
+la pierna,الرجل / الساق
+el pie,القدم
+el cuerpo,الجسم
+el corazón,القلب
+el estómago,المعدة
+la espalda,الظهر
+la casa,البيت
+el piso,الشقة / الطابق
+la habitación,الأوضة / الغرفة
+el dormitorio,أوضة النوم
+la cocina,المطبخ
+el baño,الحمام
+el salón,الصالة
+el comedor,غرفة الأكل
+el jardín,الجنينة / الحديقة
+la puerta,الباب
+la ventana,الشباك
+la mesa,الترابيزة / الطاولة
+la silla,الكرسي
+el sofá,الكنبة
+la cama,السرير
+el armario,الدولاب
+la lámpara,اللمبة
+el espejo,المرايا
+la nevera,التلاجة
+el horno,الفرن
+la lavadora,الغسالة
+el teléfono,التليفون
+el móvil,الموبايل
+el ordenador,الكمبيوتر
+la televisión,التليفزيون
+el libro,الكتاب
+la revista,المجلة
+el periódico,الجريدة
+el bolígrafo,القلم الجاف
+el lápiz,القلم الرصاص
+el papel,الورق
+la mochila,الشنطة (ظهر)
+el cuaderno,الكراسة
+la cartera,المحفظة
+la llave,المفتاح
+el dinero,الفلوس
+la tienda,الدكان / المحل
+el mercado,السوق
+el supermercado,السوبر ماركت
+el banco,البنك
+el hospital,المستشفى
+la farmacia,الصيدلية
+el médico,الدكتور (ذكر)
+la médica,الدكتورة (أنثى)
+la escuela,المدرسة
+el colegio,المدرسة
+la universidad,الجامعة
+el alumno,الطالب (ذكر)
+la alumna,الطالبة (أنثى)
+el profesor,الأستاذ (ذكر)
+la profesora,الأستاذة (أنثى)
+la clase,الفصل / الحصة
+el despacho,المكتب
+la oficina,الأوفيس
+el jefe,المدير / الرئيس
+el trabajo,الشغل
+el restaurante,المطعم
+el café,القهوة / المقهى
+el bar,البار
+el hotel,الفندق
+el aeropuerto,المطار
+la estación,المحطة
+el metro,المترو
+el autobús,الأتوبيس
+el tren,القطر
+el avión,الطيارة
+el coche,العربية / السيارة
+la bicicleta,الدراجة
+el taxi,التاكسي
+la calle,الشارع
+la plaza,الميدان
+el parque,الحديقة العامة
+la ciudad,المدينة
+el pueblo,القرية / البلد الصغير
+el país,البلد / الدولة
+España,إسبانيا
+México,المكسيك
+Argentina,الأرجنتين
+Colombia,كولومبيا
+Perú,بيرو
+Chile,شيلي
+Cuba,كوبا
+Egipto,مصر
+Marruecos,المغرب
+Francia,فرنسا
+Italia,إيطاليا
+Alemania,ألمانيا
+Inglaterra,إنجلترا
+América,أمريكا
+Europa,أوروبا
+África,أفريقيا
+el agua,الماء
+la leche,الحليب
+el zumo,العصير
+el café,القهوة
+el té,الشاي
+la cerveza,البيرة
+el vino,النبيذ
+el pan,العيش / الخبز
+el arroz,الأرز
+la pasta,المكرونة
+la carne,اللحمة
+el pollo,الفراخ
+el pescado,السمك
+el jamón,الجامبون
+el queso,الجبنة
+el huevo,البيضة
+la ensalada,السلطة
+la sopa,الشوربة
+la pizza,البيتزا
+la hamburguesa,الهامبرجر
+las patatas fritas,البطاطس المقلية
+el helado,الآيس كريم
+el chocolate,الشوكولاتة
+el pastel,التورتة / الكيكة
+la fruta,الفاكهة
+la manzana,التفاحة
+la naranja,البرتقالة
+el plátano,الموزة
+la fresa,الفراولة
+la uva,العنبة
+el limón,الليمونة
+la sandía,البطيخة
+el tomate,الطماطمة
+la lechuga,الخس
+la zanahoria,الجزرة
+la cebolla,البصلة
+el ajo,الثومة
+la patata,البطاطسة
+el pimiento,الفلفلة
+la ropa,الهدوم / الملابس
+la camiseta,التيشرت
+la camisa,القميص
+el pantalón,البنطلون
+los vaqueros,الجينز
+la falda,الجيبة
+el vestido,الفستان
+el abrigo,البالطو / المعطف
+la chaqueta,الجاكيت
+el jersey,البلوفر
+los zapatos,الجزمة / الحذاء
+las zapatillas,الكوتش / الجزمة الرياضية
+los calcetines,الشراب
+la bufanda,الكوفية
+el sombrero,القبعة
+los guantes,الجوانتي
+rojo,أحمر
+azul,أزرق
+verde,أخضر
+amarillo,أصفر
+naranja,برتقالي
+morado,بنفسجي
+rosa,وردي
+blanco,أبيض
+negro,أسود
+gris,رمادي
+marrón,بني
+beige,بيج
+grande,كبير
+pequeño,صغير
+alto,طويل
+bajo,قصير
+gordo,تخين / سمين
+delgado,رفيع / نحيف
+guapo,وسيم / جميل
+feo,وحش / قبيح
+joven,صغير / شاب
+viejo,كبير / قديم
+nuevo,جديد
+antiguo,قديم
+bueno,كويس / حلو
+malo,وحش / سيء
+bonito,جميل / حلو
+fácil,سهل
+difícil,صعب
+rápido,سريع
+lento,بطيء
+largo,طويل (طول)
+corto,قصير
+limpio,نظيف
+sucio,وسخ
+caliente,سخن / حار
+frío,بارد
+lleno,مليان
+vacío,فاضي
+abierto,مفتوح
+cerrado,مغلق
+caro,غالي
+barato,رخيص
+importante,مهم
+interesante,مثير للاهتمام
+aburrido,ممل
+divertido,ممتع / مسلي
+contento,مبسوط / سعيد
+triste,زعلان / حزين
+enfadado,زعلان / غاضب
+cansado,تعبان
+enfermo,مريض
+sano,صحته كويسة / سليم
+listo,ذكي / جاهز
+tonto,غبي
+simpático,ظريف / لطيف
+antipático,مش لطيف
+tranquilo,هادي
+nervioso,متوتر / قلقان
+ocupado,مشغول
+libre,فاضي / حر
+el perro,الكلب
+el gato,القط
+el pájaro,الطير / العصفور
+el pez,السمكة
+el caballo,الحصان
+la vaca,البقرة
+el cerdo,الخنزير
+el oso,الدب
+el león,الأسد
+el tigre,النمر
+el elefante,الفيل
+la jirafa,الزرافة
+el mono,القرد
+la serpiente,الأفعى
+el cocodrilo,التمساح
+el sol,الشمس
+la luna,القمر
+la estrella,النجمة
+el cielo,السما
+la nube,السحابة
+la lluvia,المطر
+el viento,الريح
+la nieve,الثلج
+el mar,البحر
+el río,النهر
+la montaña,الجبل
+el bosque,الغابة
+el desierto,الصحراء
+la playa,الشاطئ
+la isla,الجزيرة
+el lago,البحيرة
+el árbol,الشجرة
+la flor,الزهرة
+la hierba,العشب
+el fútbol,كرة القدم
+el baloncesto,كرة السلة
+la natación,السباحة
+el tenis,التنس
+el deporte,الرياضة
+la música,الموسيقى
+el cine,السينما
+el teatro,المسرح
+el baile,الرقص
+las vacaciones,الإجازة
+la fiesta,الحفلة
+el cumpleaños,عيد ميلاد
+la boda,الجواز / الفرح
+el regalo,الهدية
+la canción,الأغنية
+la película,الفيلم
+internet,الإنترنت
+el correo electrónico,الإيميل
+la foto,الصورة
+el mensaje,الرسالة
+bien,تمام / كويس
+muy,جداً
+mucho,كتير
+todo,كل حاجة
+nada,ولا حاجة / لا شيء
+siempre,دايماً
+nunca,أبداً
+a veces,أحياناً
+normalmente,عادةً
+ya,خلاص / بالفعل
+todavía,لسه
+cerca,قريب
+lejos,بعيد
+arriba,فوق
+abajo,تحت
+dentro,جوه
+fuera,برة
+delante,قدام
+detrás,ورا
+a la derecha,على اليمين
+a la izquierda,على الشمال
+recto,على طول
+a,إلى
+de,من / بتاع
+en,في
+con,مع
+sin,من غير / بدون
+para,لـ / عشان
+por,بسبب / عن طريق
+sobre,على / عن
+entre,بين
+hasta,لحد / حتى
+desde,من (وقت)
+durante,خلال
+después,بعدين
+antes,قبل
+cuando,لما / عندما
+si,لو / إذا
+que,اللي / إن
+porque,لأن
+aunque,رغم / على الرغم من
+también,كمان / أيضاً
+pero,بس / لكن
+¿Puedo ayudarte?,أقدر أساعدك؟
+¿Hablas español?,بتتكلم إسباني؟
+No entiendo,مش فاهم
+¿Puedes repetir?,ممكن تعيد؟
+Más despacio,أبطأ شوية
+¿Cuánto cuesta?,بكام؟
+¿Dónde está...?,فين...؟
+Me gusta,بيعجبني
+No me gusta,مش بيعجبني
+Tengo hambre,أنا جعان
+Tengo sed,أنا عطشان
+Tengo frío,أنا برد
+Tengo calor,أنا حر
+Estoy cansado,أنا تعبان
+Estoy bien,أنا كويس
+La cuenta por favor,الحساب من فضلك
+¿Hay wifi?,في واي فاي؟
+¿Dónde está el baño?,فين الحمام؟
+Necesito un médico,محتاج دكتور
+Me he perdido,أنا تهت
+el pasaporte,الباسبور / جواز السفر
+la maleta,الشنطة
+el billete,التذكرة
+el vuelo,الرحلة الجوية
+la tarjeta de crédito,الكريدت كارد
+el efectivo,كاش / نقود
+el precio,السعر
+el descuento,الخصم
+la salud,الصحة
+el dolor,الألم
+la fiebre,الحرارة / السخونة
+la tos,الكحة
+el resfriado,الزكام
+el medicamento,الدواء
+la pastilla,الحبة / الأقراص
+el invierno,الشتا
+la primavera,الربيع
+el verano,الصيف
+el otoño,الخريف
+hace calor,الجو حر
+hace frío,الجو بارد
+llueve,بتمطر
+hace sol,الجو مشمس
+la naturaleza,الطبيعة
+el clima,المناخ
+la temperatura,درجة الحرارة
+el terremoto,الزلزال
+la tormenta,العاصفة
+el trueno,الرعد
+el relámpago,البرق
+la niebla,الضباب
+el arcoíris,قوس قزح
+la puesta de sol,غروب الشمس
+el amanecer,الفجر / شروق الشمس
+la luz,النور
+húmedo,رطب
+seco,جاف
+nublado,صحابي / غيوم
+despejado,صافي / صحو
+soleado,مشمس
+¿Qué tiempo hace?,الجو عامل إيه؟
+el invierno,الشتا
+la primavera,الربيع
+el verano,الصيف
+el otoño,الخريف
+anteayer,أول إمبارح
+pasado mañana,بعد بكرة
+en punto,بالظبط (الساعة)
+y media,والنص
+y cuarto,والربع
+menos cuarto,إلا ربع
+la madrugada,الفجر / ساعات الصبح الأولى`;
+
+const CATEGORIES = [
+  { label: "All", key: "all" },
+  { label: "Greetings", key: "greetings", words: ["hola","adiós","buenos días","buenas tardes","buenas noches","encantado","mucho gusto","por favor","gracias","muchas gracias","de nada","perdón","lo siento"] },
+  { label: "Verbs", key: "verbs", words: ["ser","estar","tener","hacer","ir","venir","querer","poder","saber","hablar","comer","beber","vivir","escribir","leer","escuchar","ver","mirar","trabajar","estudiar","comprar","vender","llegar","salir","entrar","abrir","cerrar","dormir","levantarse","sentarse","llamarse","gustar","necesitar","buscar","encontrar","dar","poner","traer","llevar","esperar","pensar","creer","conocer","preguntar","contestar","empezar","terminar","ayudar","jugar","caminar","correr","cocinar","limpiar"] },
+  { label: "Numbers", key: "numbers", words: ["uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa","cien","doscientos","mil","primero","segundo","tercero","cuarto","quinto"] },
+  { label: "Food & drink", key: "food", words: ["el agua","la leche","el zumo","el café","el té","la cerveza","el vino","el pan","el arroz","la pasta","la carne","el pollo","el pescado","el jamón","el queso","el huevo","la ensalada","la sopa","la pizza","la hamburguesa","las patatas fritas","el helado","el chocolate","el pastel","la fruta","la manzana","la naranja","el plátano","la fresa","la uva","el limón","la sandía","el tomate","la lechuga","la zanahoria","la cebolla","el ajo","la patata","el pimiento"] },
+  { label: "Colors & adjectives", key: "adj", words: ["rojo","azul","verde","amarillo","naranja","morado","rosa","blanco","negro","gris","marrón","beige","grande","pequeño","alto","bajo","gordo","delgado","guapo","feo","joven","viejo","nuevo","antiguo","bueno","malo","bonito","fácil","difícil","rápido","lento","largo","corto","limpio","sucio","caliente","frío","lleno","vacío","abierto","cerrado","caro","barato","importante","interesante","aburrido","divertido","contento","triste","enfadado","cansado","enfermo","sano","listo","tonto","simpático","antipático","tranquilo","nervioso","ocupado","libre"] },
+  { label: "Family", key: "family", words: ["la familia","el padre","la madre","el hermano","la hermana","el hijo","la hija","el abuelo","la abuela","el tío","la tía","el primo","la prima","el marido","la mujer","el novio","la novia","el amigo","la amiga","el vecino","la vecina","el bebé","el niño","la niña","el joven","la joven","el hombre","el señor","la señora","la señorita"] },
+  { label: "Body", key: "body", words: ["la cabeza","el pelo","la cara","el ojo","los ojos","la nariz","la boca","la oreja","el diente","la mano","el dedo","el brazo","la pierna","el pie","el cuerpo","el corazón","el estómago","la espalda"] },
+  { label: "Weather", key: "weather", words: ["el sol","la luna","la estrella","el cielo","la nube","la lluvia","el viento","la nieve","el mar","el río","la montaña","la playa","el árbol","la flor","húmedo","seco","nublado","despejado","soleado","hace calor","hace frío","llueve","hace sol","¿Qué tiempo hace?","el invierno","la primavera","el verano","el otoño"] },
+  { label: "Useful phrases", key: "phrases", words: ["¿Puedo ayudarte?","¿Hablas español?","No entiendo","¿Puedes repetir?","Más despacio","¿Cuánto cuesta?","¿Dónde está...?","Me gusta","No me gusta","Tengo hambre","Tengo sed","Tengo frío","Tengo calor","Estoy cansado","Estoy bien","La cuenta por favor","¿Hay wifi?","¿Dónde está el baño?","Necesito un médico","Me he perdido"] },
+];
+
+// ─── STATE ──────────────────────────────────────────
+let words = [];
+let marked = new Set();
+let editingId = null;
+let activeCat = 0;
+let showMarkedOnly = false;
+
+// Quiz
+let quizPool = [];
+let quizIdx = 0;
+let quizFlipped = false;
+
+// ─── PERSISTENCE ─────────────────────────────────────
+const STORAGE_KEY = 'spanishVocabApp_v1';
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      words,
+      marked: [...marked],
+      activeCat
+    }));
+  } catch (e) { /* storage unavailable, fail silently */ }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+
+// ─── INIT ────────────────────────────────────────────
+function parseCSV(text) {
+  return text.trim().split('\n').slice(1).map((line, i) => {
+    const ci = line.indexOf(',');
+    if (ci < 0) return null;
+    return { id: i + 1, spanish: line.slice(0, ci).trim(), arabic: line.slice(ci + 1).trim() };
+  }).filter(Boolean);
+}
+
+function init() {
+  const saved = loadState();
+  if (saved && Array.isArray(saved.words) && saved.words.length > 0) {
+    words = saved.words;
+    marked = new Set(saved.marked || []);
+    activeCat = typeof saved.activeCat === 'number' ? saved.activeCat : 0;
+  } else {
+    words = parseCSV(RAW_CSV);
+  }
+  buildCats();
+  render();
+}
+
+// ─── CATEGORIES ──────────────────────────────────────
+function buildCats() {
+  const c = document.getElementById('cats-container');
+  c.innerHTML = '';
+  CATEGORIES.forEach((cat, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-pill' + (i === activeCat ? ' active' : '');
+    btn.textContent = cat.label;
+    btn.onclick = () => { activeCat = i; buildCats(); render(); saveState(); };
+    c.appendChild(btn);
+  });
+}
+
+// ─── RENDER ──────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  const cat = CATEGORIES[activeCat];
+  return words.filter(w => {
+    const inCat = cat.key === 'all' || (cat.words && cat.words.includes(w.spanish));
+    const inSearch = !q || w.spanish.toLowerCase().includes(q) || w.arabic.includes(q);
+    const inMarked = !showMarkedOnly || marked.has(w.id);
+    return inCat && inSearch && inMarked;
+  });
+}
+
+function render() {
+  const filtered = getFiltered();
+  const body = document.getElementById('table-body');
+
+  // stats
+  document.getElementById('stat-total').textContent = words.length;
+  document.getElementById('stat-marked').textContent = marked.size;
+  document.getElementById('stat-known').textContent = words.length - marked.size;
+  document.getElementById('stat-shown').textContent = filtered.length;
+  document.getElementById('subtitle-count').textContent = `${words.length} words • A1 Spanish - Arabic`;
+  document.getElementById('results-count').textContent = filtered.length + ' words';
+
+  if (filtered.length === 0) {
+    body.innerHTML = `<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>No results found</div>`;
+    return;
+  }
+
+  body.innerHTML = filtered.map((w, idx) => {
+    const isMarked = marked.has(w.id);
+    const isEditing = editingId === w.id;
+
+    const saveIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    const xIcon    = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
+    if (isEditing) {
+      return `<div class="edit-row" id="row-${w.id}">
+        <span class="row-num">${idx+1}</span>
+        <input class="edit-input" id="edit-es-${w.id}" value="${escHtml(w.spanish)}" style="direction:ltr;text-align:left"/>
+        <input class="edit-input ar" id="edit-ar-${w.id}" value="${escHtml(w.arabic)}"/>
+        <div class="edit-actions">
+          <button class="save-btn" onclick="saveEdit(${w.id})">${saveIcon}</button>
+          <button class="cancel-btn" onclick="cancelEdit()">${xIcon}</button>
+        </div>
+      </div>`;
+    }
+
+    return `<div class="row ${isMarked ? 'marked' : ''}" id="row-${w.id}" data-word-id="${w.id}">
+      <span class="row-num">${idx+1}</span>
+      <span class="cell-es">${escHtml(w.spanish)}</span>
+      <span class="cell-ar">${escHtml(w.arabic)}</span>
+    </div>`;
+  }).join('');
+
+  attachRowGestures();
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── ROW GESTURES (long-press → menu, double-tap → mark) ──
+const LONG_PRESS_MS = 450;
+const DOUBLE_TAP_MS = 320;
+const MOVE_CANCEL_PX = 10;
+
+let pressTimer = null;
+let pressStartXY = null;
+let lastTapInfo = { id: null, time: 0 };
+
+function attachRowGestures() {
+  document.querySelectorAll('.row[data-word-id]').forEach(row => {
+    const id = Number(row.dataset.wordId);
+
+    const start = (x, y) => {
+      pressStartXY = { x, y };
+      row.classList.add('pressing');
+      clearTimeout(pressTimer);
+      pressTimer = setTimeout(() => {
+        row.classList.remove('pressing');
+        if (navigator.vibrate) navigator.vibrate(8);
+        openCtxMenu(id, row);
+      }, LONG_PRESS_MS);
+    };
+    const cancel = () => {
+      clearTimeout(pressTimer);
+      row.classList.remove('pressing');
+    };
+    const move = (x, y) => {
+      if (!pressStartXY) return;
+      const dx = Math.abs(x - pressStartXY.x), dy = Math.abs(y - pressStartXY.y);
+      if (dx > MOVE_CANCEL_PX || dy > MOVE_CANCEL_PX) cancel();
+    };
+    const end = () => {
+      cancel();
+    };
+    const tap = () => {
+      const now = Date.now();
+      if (lastTapInfo.id === id && now - lastTapInfo.time < DOUBLE_TAP_MS) {
+        lastTapInfo = { id: null, time: 0 };
+        toggleMark(id);
+      } else {
+        lastTapInfo = { id, time: now };
+      }
+    };
+
+    row.addEventListener('touchstart', e => start(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+    row.addEventListener('touchmove', e => move(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+    row.addEventListener('touchend', e => { end(); tap(); });
+    row.addEventListener('touchcancel', cancel);
+
+    row.addEventListener('mousedown', e => start(e.clientX, e.clientY));
+    row.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+    row.addEventListener('mouseup', () => { end(); tap(); });
+    row.addEventListener('mouseleave', cancel);
+
+    row.addEventListener('contextmenu', e => { e.preventDefault(); openCtxMenu(id, row); });
+  });
+}
+
+// ─── CONTEXT MENU ────────────────────────────────────
+function openCtxMenu(id, rowEl) {
+  const w = words.find(w => w.id === id);
+  if (!w) return;
+  const isMarked = marked.has(id);
+
+  const menu = document.getElementById('ctx-menu');
+  const backdrop = document.getElementById('ctx-backdrop');
+
+  const markIcon = `<svg width="15" height="15" viewBox="0 0 24 24" fill="${isMarked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  const editIcon = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+  const delIcon  = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+
+  menu.innerHTML = `
+    <button class="ctx-item" onclick="toggleMark(${id}); closeCtxMenu();">
+      ${markIcon} ${isMarked ? 'Unmark review' : 'Mark for review'}
+    </button>
+    <button class="ctx-item" onclick="startEdit(${id}); closeCtxMenu();">
+      ${editIcon} Edit
+    </button>
+    <div class="ctx-divider"></div>
+    <button class="ctx-item danger" onclick="deleteWord(${id});">
+      ${delIcon} Delete
+    </button>
+  `;
+
+  // position near the row, clamped to viewport
+  const rect = rowEl.getBoundingClientRect();
+  const menuWidth = 200, menuHeight = 150;
+  let top = rect.bottom + 6;
+  let left = rect.left + rect.width / 2 - menuWidth / 2;
+  if (top + menuHeight > window.innerHeight) top = rect.top - menuHeight - 6;
+  if (left < 8) left = 8;
+  if (left + menuWidth > window.innerWidth - 8) left = window.innerWidth - menuWidth - 8;
+
+  menu.style.top = top + 'px';
+  menu.style.left = left + 'px';
+
+  backdrop.classList.add('open');
+  menu.classList.add('open');
+}
+
+function closeCtxMenu() {
+  document.getElementById('ctx-menu').classList.remove('open');
+  document.getElementById('ctx-backdrop').classList.remove('open');
+}
+
+// ─── MARK ────────────────────────────────────────────
+function toggleMark(id) {
+  if (marked.has(id)) marked.delete(id);
+  else marked.add(id);
+  render();
+  saveState();
+}
+
+function toggleShowMarked() {
+  showMarkedOnly = !showMarkedOnly;
+  const btn = document.getElementById('show-marked-btn');
+  btn.classList.toggle('active', showMarkedOnly);
+  render();
+}
+
+// ─── EDIT ────────────────────────────────────────────
+function startEdit(id) { editingId = id; render(); setTimeout(() => document.getElementById('edit-es-'+id)?.focus(), 50); }
+function cancelEdit() { editingId = null; render(); }
+function saveEdit(id) {
+  const es = document.getElementById('edit-es-'+id)?.value.trim();
+  const ar = document.getElementById('edit-ar-'+id)?.value.trim();
+  if (!es || !ar) return;
+  words = words.map(w => w.id === id ? {...w, spanish: es, arabic: ar} : w);
+  editingId = null;
+  render();
+  saveState();
+  showToast('Saved');
+}
+
+// ─── ADD ─────────────────────────────────────────────
+function toggleAddPanel() {
+  const p = document.getElementById('add-panel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) document.getElementById('new-es').focus();
+}
+
+function addWord() {
+  const es = document.getElementById('new-es').value.trim();
+  const ar = document.getElementById('new-ar').value.trim();
+  if (!es || !ar) { showToast('Enter the word and its translation'); return; }
+  words.push({ id: Date.now(), spanish: es, arabic: ar });
+  document.getElementById('new-es').value = '';
+  document.getElementById('new-ar').value = '';
+  document.getElementById('add-panel').classList.remove('open');
+  activeCat = 0; buildCats();
+  render();
+  saveState();
+  showToast('Added');
+}
+
+// ─── DELETE ──────────────────────────────────────────
+function deleteWord(id) {
+  closeCtxMenu();
+  if (!confirm('Delete this word?')) return;
+  words = words.filter(w => w.id !== id);
+  marked.delete(id);
+  render();
+  saveState();
+  showToast('Deleted');
+}
+
+// ─── CSV ─────────────────────────────────────────────
+function downloadCSV() {
+  const csv = 'Spanish,Arabic\n' + words.map(w => `${w.spanish},${w.arabic}`).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'spanish_vocab.csv'; a.click();
+  showToast('Downloaded');
+}
+
+function importCSV(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const imported = parseCSV(ev.target.result);
+    if (imported.length > 0) { words = imported; marked.clear(); render(); saveState(); showToast(`Imported ${imported.length} words`); }
+  };
+  reader.readAsText(file, 'utf-8');
+  e.target.value = '';
+}
+
+// ─── QUIZ ────────────────────────────────────────────
+function startQuiz() {
+  const pool = [...getFiltered()].sort(() => Math.random() - 0.5);
+  if (pool.length === 0) { showToast('No words available!'); return; }
+  quizPool = pool; quizIdx = 0; quizFlipped = false;
+  document.getElementById('quiz-overlay').classList.add('open');
+  renderQuizCard();
+}
+
+function renderQuizCard() {
+  const card = quizPool[quizIdx];
+  const total = quizPool.length;
+  document.getElementById('quiz-prog-text').textContent = `${quizIdx + 1} / ${total}`;
+  document.getElementById('quiz-prog-fill').style.width = ((quizIdx + 1) / total * 100) + '%';
+  document.getElementById('quiz-card').classList.remove('flipped');
+  document.getElementById('quiz-lang').style.color = '#4f8ef7';
+  document.getElementById('quiz-lang').textContent = '🇪🇸 Spanish';
+  document.getElementById('quiz-word').textContent = card.spanish;
+  document.getElementById('quiz-word').style.direction = 'ltr';
+  document.getElementById('quiz-hint').style.display = '';
+  document.getElementById('quiz-next').classList.remove('show');
+  quizFlipped = false;
+}
+
+function flipCard() {
+  if (quizFlipped) return;
+  quizFlipped = true;
+  const card = quizPool[quizIdx];
+  document.getElementById('quiz-card').classList.add('flipped');
+  document.getElementById('quiz-lang').style.color = '#3dd68c';
+  document.getElementById('quiz-lang').textContent = '🇪🇬 Arabic';
+  document.getElementById('quiz-word').textContent = card.arabic;
+  document.getElementById('quiz-word').style.direction = 'rtl';
+  document.getElementById('quiz-hint').style.display = 'none';
+  document.getElementById('quiz-next').classList.add('show');
+  const isLast = quizIdx + 1 >= quizPool.length;
+  document.getElementById('quiz-next').textContent = isLast ? '🎉 Done!' : 'Next →';
+}
+
+function nextCard() {
+  quizIdx++;
+  if (quizIdx >= quizPool.length) { closeQuiz(); showToast('🎉 Nice work! You finished the deck'); return; }
+  renderQuizCard();
+}
+
+function closeQuiz() { document.getElementById('quiz-overlay').classList.remove('open'); }
+
+// ─── TOAST ───────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ─── KEYBOARD ────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeQuiz(); cancelEdit(); closeCtxMenu(); document.getElementById('add-panel').classList.remove('open'); }
+  if (document.getElementById('quiz-overlay').classList.contains('open')) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); quizFlipped ? nextCard() : flipCard(); }
+  }
+});
+
+init();
+</script>
+</body>
+</html>
